@@ -1,6 +1,6 @@
 // container for all todos
 let allTodos = [];
-let IdOfLastTodo = 0;
+let lastId = 0;
 
 // elements
 const todoInput = document.querySelector(".todo-input");
@@ -53,13 +53,14 @@ function createTodo(todoItem) {
 function addTodo(event) {
   // prevent form content to send backend.
   event.preventDefault();
+  let todoId = newTodoId();
 
   // A TODO - UI
   const todoDiv = document.createElement("div");
   todoDiv.classList.add("todo");
   // id
   newId = document.createElement("i");
-  newId.innerText = IdOfLastTodo;
+  newId.innerText = todoId;
   newId.classList.add("todo-id");
   todoDiv.append(newId);
   // the Todo Text
@@ -86,14 +87,12 @@ function addTodo(event) {
 
   // save newTodo in the allTodos array
   const todoText = newTodo.innerText;
-  const todo = { id: IdOfLastTodo, text: todoText, status: "active" };
+  const todo = { id: todoId, text: todoText, status: "active" };
   allTodos.push(todo);
 
   // remove and check mark for trash btn and complete btn
   trashButton.addEventListener("click", removeTodo);
   completedButton.addEventListener("click", completeTodo);
-  // console.log(allTodos);
-  IdOfLastTodo++;
 
   // save todo on the local storage
   saveTodoOnDb(todo);
@@ -152,6 +151,16 @@ function readTodos(storageName = "todos") {
     allTodos = JSON.parse(localStorage.getItem(storageName));
   else localStorage.setItem(storageName, JSON.stringify(allTodos));
   return allTodos;
+}
+
+function newTodoId() {
+  const allTodos = readTodos();
+  let lastId = 0;
+  if (allTodos.length > 0) {
+    const lastTodo = allTodos.at(-1);
+    lastId = lastTodo["id"];
+  }
+  return ++lastId;
 }
 
 function showTodos() {
