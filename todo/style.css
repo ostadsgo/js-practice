@@ -15,6 +15,10 @@ body {
   min-height: 100vh;
 }
 
+
+ul {
+  list-style-type: none;
+}
 header, form {
   display: flex;
   justify-content: center;
@@ -41,4 +45,57 @@ form button {
 form button:hover {
   background: #d88771;
   color: white;
+}
+
+.todo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.todo-list {
+  min-width: 30%;
+}
+
+.todo {
+  /* border: 1px dashed red; */
+  margin: 0.5rem;
+  background: white;
+  color: black;
+  font-size: .85rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all .5s ease;
+}
+
+.todo > li {
+  flex: 1;
+  padding: 0 3px;
+}
+
+.complete-btn, .trash-btn {
+  background: #f43d3d;
+  color: white;
+  border: none;
+  outline: none;
+  cursor: pointer;         
+  padding: .5rem;
+}
+
+.complete-btn {
+  background: #4aa54a;
+}
+
+.complete-btn:hover {
+  background: #3f973f;
+}
+
+.fa-trash, .fa-check {
+  pointer-events: none;
+}
+
+.completed {
+  text-decoration: line-through;
+  opacity: .9;
 }
