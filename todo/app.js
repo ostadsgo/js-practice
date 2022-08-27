@@ -17,6 +17,7 @@ function createTodo(todoItem) {
   // A TODO - UI
   const todoDiv = document.createElement("div");
   todoDiv.classList.add("todo");
+  todoDiv.classList.add(todoItem["status"]);
   // id
   todoId = document.createElement("i");
   todoId.innerText = todoItem["id"];
@@ -123,16 +124,11 @@ function filterTodo(event) {
   const todos = todoList.childNodes;
   const selectedOption = event.target.value;
   for (let todo of todos) {
+    const isCompleted = todo.classList.contains("completed");
     if (selectedOption === "all") todo.style.display = "flex";
-    else if (
-      selectedOption === "completed" &&
-      todo.classList.contains("completed")
-    )
+    else if (selectedOption === "completed" && isCompleted)
       todo.style.display = "flex";
-    else if (
-      selectedOption === "uncompleted" &&
-      !todo.classList.contains("completed")
-    )
+    else if (selectedOption === "uncompleted" && !isCompleted)
       todo.style.display = "flex";
     else todo.style.display = "none";
   }
