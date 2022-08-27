@@ -9,7 +9,7 @@ const todoList = document.querySelector(".todo-list");
 const filterOption = document.querySelector(".filter-todo");
 
 // Events
-document.addEventListener("DOMContentLoaded", readTodosFromDb);
+document.addEventListener("DOMContentLoaded", showTodos);
 todoButton.addEventListener("click", addTodo);
 filterOption.addEventListener("click", filterTodo);
 
@@ -47,6 +47,7 @@ function createTodo(todoItem) {
   completedButton.addEventListener("click", completeTodo);
   // console.log(allTodos);
 }
+
 // Functions for ui
 function addTodo(event) {
   // prevent form content to send backend.
@@ -113,21 +114,9 @@ function completeTodo(event) {
   todo.classList.toggle("completed");
   // Change status of the todo to completed.
   const todoId = parseInt(todo.childNodes[0].innerText);
-  const isComplete = todo.classList.contains("completed");
-  // find the todo with the id from all todos
-  let todoItem;
-  for (todoItem of allTodos) {
-    if (todoItem["id"] === todoId && isComplete) {
-      todoItem["status"] = "completed";
-      break;
-    }
-
-    if (todoItem["id"] === todoId && !isComplete) {
-      todoItem["status"] = "active";
-      break;
-    }
-  }
-  saveTodoOnDb(todoItem);
+  const isCompleted = todo.classList.contains("completed");
+  if (isCompleted) updateStatus(todoId, "completed");
+  else updateStatus(todoId, "active");
 }
 
 function filterTodo(event) {
@@ -149,46 +138,56 @@ function filterTodo(event) {
   }
 }
 
+// if there isn't a local storage create empty one.
 // Local Storage
 // ---------------
-function readTodosFromDb() {
-  if (localStorage.getItem("todos") != null) {
-    allTodos = JSON.parse(localStorage.getItem("todos"));
-    lastTodo = allTodos.at(-1);
-    IdOfLastTodo = ++lastTodo["id"];
-  } else {
-    allTodos = [];
+function indexOfTodo(todos, todoId) {
+  let index = 0;
+  for (let todo of todos) {
+    if (todo["id"] === todoId) return index;
+    index++;
   }
+}
+
+function readTodos(storageName = "todos") {
+  // if there is a local storge name todos
+  let allTodos = [];
+  if (localStorage.getItem(storageName) != null)
+    allTodos = JSON.parse(localStorage.getItem(storageName));
+  else localStorage.setItem(storageName, JSON.stringify(allTodos));
+  return allTodos;
+}
+
+function showTodos() {
   // display todos have been red from db
+  let allTodos = readTodos();
   for (let todo of allTodos) {
     createTodo(todo);
   }
 }
 
 function saveTodoOnDb(todo) {
-  if (localStorage.getItem("todos") === null) allTodos = [];
-  else allTodos = JSON.parse(localStorage.getItem("todos"));
+  let allTodos = readTodos();
   allTodos.push(todo);
   localStorage.setItem("todos", JSON.stringify(allTodos));
 }
 
-function saveTodosOnDb() {
+function saveTodos(todos) {
   localStorage.clear();
-  localStorage.setItem("todos", JSON.stringify(allTodos));
+  localStorage.setItem("todos", JSON.stringify(todos));
 }
 
 function removeTodoFromDb(todoId) {
-  let index = 0;
-  for (let todoItem of allTodos) {
-    if (todoItem["id"] === todoId) {
-      allTodos.splice(index, 1);
-      saveTodosOnDb();
-      break;
-    }
-    index++;
-  }
-
-  // Save all todos after deleted a todo
+  let allTodos = readTodos();
+  let index = indexOfTodo(allTodos, todoId);
+  allTodos.splice(index, 1);
+  saveTodos(allTodos);
 }
 
-function completeTodoOnDb(todo) {}
+function updateStatus(todoId, status) {
+  const allTodos = readTodos();
+  const index = indexOfTodo(allTodos, todoId);
+  const todo = allTodos[index];
+  todo["status"] = status;
+  saveTodos(allTodos);
+}
