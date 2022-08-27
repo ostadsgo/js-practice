@@ -19,6 +19,13 @@ body {
 ul {
   list-style-type: none;
 }
+
+select {
+  appearance: none;
+  outline: none;
+  border: none;
+}
+
 header, form {
   display: flex;
   justify-content: center;
@@ -36,8 +43,8 @@ form input, form button {
 }
 
 form button {
-  color: #d88771;
-  background: white;
+  color: white;
+  background: #d88771;
   cursor: pointer;
   transition: all .3s ease;
 }
@@ -104,3 +111,29 @@ form button:hover {
   transform: translateY(8rem) rotateZ(20deg);
   opacity: 0;
 }
+
+.select-container {
+  margin: 1rem;
+  position: relative;
+  overflow: none;
+
+}
+
+.select-container::after {
+  content: "\25BC";
+  position: absolute;
+  background-color: #d88771;
+  top: 0;
+  right: 0;
+  pointer-events: none;
+  padding: .23rem;
+  transition: all .5s ease;
+}
+
+.filter-todo {
+  min-width: 8rem;
+  cursor: pointer;
+  padding: .5rem;
+
+}
+
