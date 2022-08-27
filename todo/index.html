@@ -18,26 +18,30 @@
     <header>
       <h1>Javascript To-DO List</h1>
     </header>
-    <form action="">
-      <input
-        class="todo-input"
-        type="text"
-        placeholder="Task you spposed to do ..."
-      />
-      <button class="todo-button" type="submit">
-        <i class="fas fa-plus-square"></i>
-      </button>
-      <div class="select-container">
-        <select class="filter-todo" name="select-todos">
-          <option value="all">All</option>
-          <option value="completed">Completed</option>
-          <option value="uncompleted">Uncompleted</option>
-        </select>
+    <main class="container">
+      <form class="todo-form">
+        <div class="input-btn">
+          <input
+            class="todo-input"
+            type="text"
+            placeholder="Task you spposed to do ..."
+          />
+          <button class="todo-button" type="submit">
+            <i class="fas fa-plus-square"></i>
+          </button>
+        </div>
+        <div class="select-container">
+          <select class="filter-todo" name="select-todos">
+            <option value="all">All</option>
+            <option value="completed">Completed</option>
+            <option value="uncompleted">Uncompleted</option>
+          </select>
+        </div>
+      </form>
+      <div class="todo-container">
+        <ul class="todo-list"></ul>
       </div>
-    </form>
-    <div class="todo-container">
-      <ul class="todo-list"></ul>
-    </div>
+    </main>
     <script src="app.js"></script>
   </body>
 </html>
