@@ -53,49 +53,13 @@ function createTodo(todoItem) {
 function addTodo(event) {
   // prevent form content to send backend.
   event.preventDefault();
-  let todoId = newTodoId();
-
-  // A TODO - UI
-  const todoDiv = document.createElement("div");
-  todoDiv.classList.add("todo");
-  // id
-  newId = document.createElement("i");
-  newId.innerText = todoId;
-  newId.classList.add("todo-id");
-  todoDiv.append(newId);
-  // the Todo Text
-  const newTodo = document.createElement("li");
-  newTodo.innerText = todoInput.value;
-  newTodo.classList.add("todo-text");
-  todoDiv.appendChild(newTodo);
-  // Check Button
-  const completedButton = document.createElement("button");
-  completedButton.innerHTML = "<i class='fas fa-check'></li>";
-  completedButton.classList.add("complete-btn");
-  todoDiv.appendChild(completedButton);
-  // Trashcan button
-  const trashButton = document.createElement("button");
-  trashButton.innerHTML = "<li class='fas fa-trash'></li>";
-  trashButton.classList.add("trash-btn");
-  todoDiv.appendChild(trashButton);
-
-  // append todo to the todoList(ul)
-  todoList.appendChild(todoDiv);
-  // clear todoInput
-  todoInput.value = "";
-  todoInput.focus();
-
-  // save newTodo in the allTodos array
-  const todoText = newTodo.innerText;
-  const todo = { id: todoId, text: todoText, status: "active" };
-  allTodos.push(todo);
-
-  // remove and check mark for trash btn and complete btn
-  trashButton.addEventListener("click", removeTodo);
-  completedButton.addEventListener("click", completeTodo);
-
+  const todoId = newTodoId();
+  const todoText = todoInput.value;
+  const todoStatus = "active";
+  const todoItem = { id: todoId, text: todoText, status: todoStatus };
+  createTodo(todoItem);
   // save todo on the local storage
-  saveTodoOnDb(todo);
+  saveTodoOnDb(todoItem);
 }
 
 function removeTodo(event) {
