@@ -4,8 +4,6 @@ const todoList = document.querySelector(".todo-list");
 
 
 // Functions
-
-// create a todo when user click on addButton
 function addTodo(event) {
     // prevent form content to send backend.
     event.preventDefault();
@@ -35,19 +33,20 @@ function addTodo(event) {
     // append todo to the todoList(ul)
     todoList.appendChild(todoDiv);
     // clear todoInput
-    todoInput.innerText = "";
+    todoInput.value = "";
+    todoInput.focus();
     
     // remove and check mark for trash btn and complete btn
     trashButton.addEventListener("click", removeTodo);
     completedButton.addEventListener("click", completeTodo);
 }
 
-// remove a todo when user click on trash button
 function removeTodo(event) {
     const trashButton = event.target;
-    // the todo we want to remove
     const todo = trashButton.parentElement;
-    todo.remove();
+    todo.classList.add("fall"); // class for animation
+    // wait until animation get done
+    todo.addEventListener("transitionend", () => todo.remove());
 }
 
 function completeTodo(event) {
